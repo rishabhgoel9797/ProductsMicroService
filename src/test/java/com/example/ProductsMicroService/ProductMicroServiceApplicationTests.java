@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ProductsMicroServiceApplicationTests {
+public class ProductMicroServiceApplicationTests {
 
 	@Test
 	public void contextLoads() {

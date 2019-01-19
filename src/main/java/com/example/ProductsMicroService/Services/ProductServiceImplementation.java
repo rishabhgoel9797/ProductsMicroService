@@ -1,0 +1,45 @@
+package com.example.ProductsMicroService.Services;
+
+import com.example.ProductsMicroService.Entity.Product;
+import com.example.ProductsMicroService.Repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class ProductServiceImplementation implements ProductService{
+
+    @Autowired
+    ProductRepository productRepository;
+
+
+    @Override
+    public Product addProduct(Product product) {
+        return productRepository.insert(product);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product findProduct(String productId) {
+        return productRepository.findOne(productId);
+    }
+
+
+    @Override
+    public void deleteProduct(String id) {
+        productRepository.delete(id);
+    }
+
+    @Override
+    public Product update(Product product) {
+        return productRepository.save(product);
+    }
+
+
+}
