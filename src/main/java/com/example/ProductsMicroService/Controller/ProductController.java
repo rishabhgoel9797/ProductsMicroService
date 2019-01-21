@@ -64,10 +64,11 @@ public class ProductController {
     }
 //
     @RequestMapping(value = BASE_URL+"/getAllCategories",method = RequestMethod.GET)
-    public Set<String> getCategories()
+    public List<Category> getCategories()
     {
         List<Product> productList=productService.findAllCategories();
         List<SubCategory> subCategories=new ArrayList<>();
+        List<Category> categoriesList=new ArrayList<>();
         Set<String> categories=new HashSet<>();
 
 
@@ -76,19 +77,25 @@ public class ProductController {
             subCategories=productList.get(i).subCategory;
             for(int j=0;j<subCategories.size();j++)
             {
+                if(!(categories.contains(subCategories.get(j).getCategory().getCategoryName())))
+                {
+                    categoriesList.add(subCategories.get(j).getCategory());
+                }
                 categories.add(subCategories.get(j).getCategory().getCategoryName());
             }
 
         }
 
-        return categories;
+        return categoriesList;
     }
 
     @RequestMapping(value = BASE_URL+"/getSubCategoriesByCategory/{categoryName}",method = RequestMethod.GET)
-    public Set<String> getSubCategories(@PathVariable String categoryName)
+    public List<SubCategory> getSubCategories(@PathVariable String categoryName)
     {
+        int count=0;
         List<Product> productsByCategories=productService.findByCategoryName(categoryName);
         List<SubCategory> subCategories=new ArrayList<>();
+        List<SubCategory> subCategorySet=new ArrayList<>();
         Set<String> subCategString=new HashSet<>();
         for(int i=0;i<productsByCategories.size();i++)
         {
@@ -97,13 +104,26 @@ public class ProductController {
             {
                 if(subCategories.get(j).category.getCategoryName().equalsIgnoreCase(categoryName))
                 {
+                    if(!(subCategString.contains(subCategories.get(j).getSubcategoryName())))
+                    {
+                        subCategorySet.add(subCategories.get(j));
+                    }
                     subCategString.add(subCategories.get(j).getSubcategoryName());
+
+
                 }
             }
         }
-        return subCategString;
+        return subCategorySet;
     }
 
+    @RequestMapping(value = BASE_URL+"/getAllProductsFromSubCategories/{subCategoryName}",method = RequestMethod.GET)
+    public List<Product> getProductsBySubCategory(@PathVariable String subCategoryName)
+    {
+
+        List<Product> list=productService.findBySubCategory(subCategoryName);
+        return productService.findBySubCategory(subCategoryName);
+    }
 
     @RequestMapping(value = "/apiCall")
     private String getEmployees()

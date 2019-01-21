@@ -16,6 +16,9 @@ public interface ProductRepository extends MongoRepository<Product,String> {
     @Query(value = "{'subCategory.category.categoryName':?0}")
     List<Product> findByCategoryName(String categoryName);
 
+    @Query(value = "{'subCategory.subcategoryName':?0}")
+    List<Product> findBySubCategory(String subcategoryName);
+
 //    @Query(value = "{categoryName}")
 //    List<Category> findAllCategories();
 //    List<String> productCategories=new ArrayList<>();

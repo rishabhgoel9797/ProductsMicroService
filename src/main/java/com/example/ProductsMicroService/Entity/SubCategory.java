@@ -7,6 +7,7 @@ public class SubCategory {
     @Id
     private String subcategoryId;
     private String subcategoryName;
+    private String subcategoryImage;
 
     public Category category;
 
@@ -32,5 +33,13 @@ public class SubCategory {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public String getSubcategoryImage() {
+        return subcategoryImage;
+    }
+
+    public void setSubcategoryImage(String subcategoryImage) {
+        this.subcategoryImage = subcategoryImage;
     }
 }
