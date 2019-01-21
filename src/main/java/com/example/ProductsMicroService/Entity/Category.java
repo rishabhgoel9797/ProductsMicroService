@@ -7,6 +7,7 @@ public class Category {
     @Id
     private String categoryId;
     private String categoryName;
+    private String categoryImageUrl;
 
     public String getCategoryId() {
         return categoryId;
@@ -22,5 +23,13 @@ public class Category {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public String getCategoryImageUrl() {
+        return categoryImageUrl;
+    }
+
+    public void setCategoryImageUrl(String categoryImageUrl) {
+        this.categoryImageUrl = categoryImageUrl;
     }
 }

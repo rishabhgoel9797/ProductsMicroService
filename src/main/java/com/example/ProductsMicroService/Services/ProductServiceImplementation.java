@@ -1,5 +1,6 @@
 package com.example.ProductsMicroService.Services;
 
+import com.example.ProductsMicroService.Entity.Category;
 import com.example.ProductsMicroService.Entity.Product;
 import com.example.ProductsMicroService.Repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,21 @@ public class ProductServiceImplementation implements ProductService{
     @Override
     public Product update(Product product) {
         return productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> findByProductName(String productName) {
+        return productRepository.findByProductName(productName);
+    }
+
+    @Override
+    public List<Product> findAllCategories() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findByCategoryName(String categoryName) {
+        return productRepository.findByCategoryName(categoryName);
     }
 
 

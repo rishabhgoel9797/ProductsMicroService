@@ -1,5 +1,6 @@
 package com.example.ProductsMicroService.Services;
 
+import com.example.ProductsMicroService.Entity.Category;
 import com.example.ProductsMicroService.Entity.Product;
 
 import java.util.List;
@@ -11,4 +12,8 @@ public interface ProductService {
     Product findProduct(String productId);
     void deleteProduct(String id);
     Product update(Product product);
+    List<Product> findByProductName(String productName);
+    List<Product> findAllCategories();
+
+    List<Product> findByCategoryName(String categoryName);
 }
