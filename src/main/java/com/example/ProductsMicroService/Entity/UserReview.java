@@ -8,7 +8,7 @@ public class UserReview {
 
     private String productId;
     private String userComment;
-    private String userRatingOnProduct;
+    private int userRatingOnProduct;
 
     public String getProductId() {
         return productId;
@@ -26,11 +26,11 @@ public class UserReview {
         this.userComment = userComment;
     }
 
-    public String getUserRatingOnProduct() {
+    public int getUserRatingOnProduct() {
         return userRatingOnProduct;
     }
 
-    public void setUserRatingOnProduct(String userRatingOnProduct) {
+    public void setUserRatingOnProduct(int userRatingOnProduct) {
         this.userRatingOnProduct = userRatingOnProduct;
     }
 }

@@ -87,14 +87,21 @@ public class ProductController {
     }
 
     @RequestMapping(value = BASE_URL+"/updateProduct/{id}",method = RequestMethod.PUT)
-    public Product updateProduct(@PathVariable String id)
+    public Product updateProduct(@PathVariable String id, @RequestParam String comment,@RequestParam int userRating)
     {
             Product product=productService.findOneProduct(id);
-            List<UserReview> allUserReviews=new ArrayList<>();
+            List<UserReview> allUserReviews;
+           if(product.getUserReviews()==null) {
+                allUserReviews = new ArrayList<>();
+           }
+           else
+           {
+                allUserReviews=product.getUserReviews();
+           }
         UserReview userReview=new UserReview();
-        userReview.setProductId("5c42fae49fb455050cdd4e5a");
-        userReview.setUserComment("nice Product");
-        userReview.setUserRatingOnProduct("3");
+        userReview.setProductId(id);
+        userReview.setUserComment(comment);
+        userReview.setUserRatingOnProduct(userRating);
         allUserReviews.add(userReview);
         product.setUserReviews(allUserReviews);
         return productService.update(product);
@@ -172,38 +179,45 @@ public class ProductController {
         return productService.findBySubCategory(subCategoryName);
     }
 
-//    @RequestMapping(value = "/shortListing",method = RequestMethod.GET)
-//    public String shortListing(@RequestParam String subCategoryName)
-//    {
-//        RestTemplate restTemplate=new RestTemplate();
-//        String getUrl = "http://localhost:8003/"+BASE_URL+"/getAllProductsFromSubCategories/"+subCategoryName;
-//
-//        ResponseEntity<List<Product>> responseEntity=restTemplate.exchange(getUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Product>>() {
-//        });
-//
-//        List<Product> shortListings=responseEntity.getBody();
-//
-//        RestTemplate restTemplate1=new RestTemplate();
-//        String getURLMerchant="http://10.177.7.120:8080/getPriorityMerchant/5c46a9772befdb05127d2b22";
-//        ResponseEntity<MerchantDetailsDTO> responseEntity1=restTemplate1.exchange(getURLMerchant, HttpMethod.GET, null, new ParameterizedTypeReference<MerchantDetailsDTO>() {
-//        });
-//
-//        MerchantDetailsDTO merchantDetailsDTO=responseEntity1.getBody();
-//
-//        for(Product productShortList:shortListings)
-//        {
-//            if(productShortList.getProductId()==merchantDetailsDTO.getProductId())
-//            {
-//                ShortListingDTO shortListingDTO=new ShortListingDTO();
-//                shortListingDTO.setProductId(merchantDetailsDTO.getProductId());
-//                shortListingDTO.setDiscountedPrice(merchantDetailsDTO.getSalePrice());
-//                shortListingDTO.setMarketRetailPrice(merchantDetailsDTO.getPrice());
-//                shortListingDTO.setProductImage(productShortList.getProductImage());
-//            }
-//        }
-//
-//        return "shortlisting";
-//    }
+    @RequestMapping(value = "/shortListing",method = RequestMethod.GET)
+    public List<ShortListingDTO> shortListing(@RequestParam String subCategoryName)
+    {
+        RestTemplate restTemplate=new RestTemplate();
+        String getUrl = "http://localhost:8003/"+BASE_URL+"/getAllProductsFromSubCategories/"+subCategoryName;
+
+        ResponseEntity<List<Product>> responseEntity=restTemplate.exchange(getUrl, HttpMethod.GET, null, new ParameterizedTypeReference<List<Product>>() {
+        });
+
+        List<Product> shortListings=responseEntity.getBody();
+        List<ShortListingDTO> shortListingDTOS=new ArrayList<>();
+
+        for(Product productShortList:shortListings)
+        {
+                RestTemplate restTemplate1=new RestTemplate();
+                String getURLMerchant="http://10.177.7.120:8080/getMerchantFromProductId/"+productShortList.getProductId();
+                ResponseEntity<List<MerchantDetailsDTO>> responseEntity1=restTemplate1.exchange(getURLMerchant, HttpMethod.GET, null, new ParameterizedTypeReference<List<MerchantDetailsDTO>>() {
+                });
+              List<MerchantDetailsDTO> merchantDetailsDTO=responseEntity1.getBody();
+            for (int i=0;i<merchantDetailsDTO.size();i++)
+            {
+                                                                                  
+                if (productShortList.getProductId().equalsIgnoreCase(merchantDetailsDTO.get(i).getProductId())) {
+                                                        
+
+                    ShortListingDTO shortListingDTO=new ShortListingDTO();
+
+                    shortListingDTO.setProductName(productShortList.getProductName());
+                    shortListingDTO.setProductId(merchantDetailsDTO.get(i).getProductId());
+                    shortListingDTO.setDiscountedPrice(merchantDetailsDTO.get(i).getSalePrice());
+                    shortListingDTO.setMarketRetailPrice(merchantDetailsDTO.get(i).getPrice());
+                    shortListingDTO.setProductImage(productShortList.getProductImage());
+                    shortListingDTOS.add(shortListingDTO);
+                }
+            }
+        }
+
+        return shortListingDTOS;
+    }
 //    @RequestMapping(value = BASE_URL+"/addReviewToProduct",method = RequestMethod.PUT)
 //    public Product updateProductFromReview(@PathVariable ProductDTO productDTO)
 //    {
