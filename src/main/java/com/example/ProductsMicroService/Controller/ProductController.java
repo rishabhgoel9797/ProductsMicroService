@@ -179,7 +179,7 @@ public class ProductController {
         return productService.findBySubCategory(subCategoryName);
     }
 
-    @RequestMapping(value = "/shortListing",method = RequestMethod.GET)
+    @RequestMapping(value = BASE_URL+"/shortListing",method = RequestMethod.GET)
     public List<ShortListingDTO> shortListing(@RequestParam String subCategoryName)
     {
         RestTemplate restTemplate=new RestTemplate();
@@ -217,6 +217,32 @@ public class ProductController {
         }
 
         return shortListingDTOS;
+    }
+
+    @RequestMapping(value = BASE_URL+"/getProductRating/{productId}",method = RequestMethod.GET)
+    public double getProductRating(@PathVariable String productId)
+    {
+        int [] ratingCount=new int[5];
+        Arrays.fill(ratingCount,0);
+        double productRating;
+        Product product=productService.findOneProduct(productId);
+
+        for(int i=0;i<product.getUserReviews().size();i++)
+        {
+           ratingCount[product.getUserReviews().get(i).getUserRatingOnProduct()-1]=ratingCount[product.getUserReviews().get(i).getUserRatingOnProduct()-1]+1;
+        }
+        double productRatingSum=0;
+        for(int i=0;i<ratingCount.length;i++)
+        {
+            productRatingSum=productRatingSum+ratingCount[i]*(i+1);
+        }
+        double productRatingWeights=0;
+        for (int i=0;i<ratingCount.length;i++)
+        {
+           productRatingWeights=productRatingWeights+ratingCount[i];
+        }
+          productRating=productRatingSum/productRatingWeights;
+        return productRating;
     }
 //    @RequestMapping(value = BASE_URL+"/addReviewToProduct",method = RequestMethod.PUT)
 //    public Product updateProductFromReview(@PathVariable ProductDTO productDTO)
