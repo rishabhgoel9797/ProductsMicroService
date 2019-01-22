@@ -62,5 +62,10 @@ public class ProductServiceImplementation implements ProductService{
         return productRepository.findBySubCategory(subCategoryName);
     }
 
+    @Override
+    public Product findOneProduct(String id) {
+        return productRepository.findOne(id);
+    }
+
 
 }

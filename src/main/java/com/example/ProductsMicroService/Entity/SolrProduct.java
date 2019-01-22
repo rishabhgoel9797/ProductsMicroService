@@ -8,9 +8,9 @@ public class SolrProduct {
     private String description;
     private String usp;
     private String productImage;
-    private String category;
+    private List<String> category;
     private List<String> subCategories;
-    private String brand;
+    private List<String> brand;
 
     public String getProductId() {
         return productId;
@@ -52,11 +52,11 @@ public class SolrProduct {
         this.productImage = productImage;
     }
 
-    public String getCategory() {
+    public List<String> getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(List<String> category) {
         this.category = category;
     }
 
@@ -68,11 +68,12 @@ public class SolrProduct {
         this.subCategories = subCategories;
     }
 
-    public String getBrand() {
+    public List<String> getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(List<String> brand) {
         this.brand = brand;
     }
 }
+

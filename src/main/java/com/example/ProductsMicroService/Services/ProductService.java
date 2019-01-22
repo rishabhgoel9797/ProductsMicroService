@@ -18,4 +18,6 @@ public interface ProductService {
     List<Product> findByCategoryName(String categoryName);
 
     List<Product> findBySubCategory(String subCategoryName);
+
+    Product findOneProduct(String id);
 }

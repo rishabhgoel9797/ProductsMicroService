@@ -20,6 +20,7 @@ public class Product {
     public List<SubCategory> subCategory;
     public Brand brand;
     public Specification specification;
+    List<UserReview> userReviews;
 
     public Specification getSpecification() {
         return specification;
@@ -83,5 +84,13 @@ public class Product {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    public List<UserReview> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<UserReview> userReviews) {
+        this.userReviews = userReviews;
     }
 }

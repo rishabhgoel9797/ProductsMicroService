@@ -1,9 +1,6 @@
 package com.example.ProductsMicroService.dto;
 
-import com.example.ProductsMicroService.Entity.Brand;
-import com.example.ProductsMicroService.Entity.Category;
-import com.example.ProductsMicroService.Entity.Specification;
-import com.example.ProductsMicroService.Entity.SubCategory;
+import com.example.ProductsMicroService.Entity.*;
 
 import java.util.List;
 
@@ -18,6 +15,7 @@ public class ProductDTO {
     public List<SubCategory> subCategory;
     public Brand brand;
     public Specification specification;
+    public List<UserReview> userReviews;
 
 
 
@@ -83,5 +81,13 @@ public class ProductDTO {
 
     public void setSpecification(Specification specification) {
         this.specification = specification;
+    }
+
+    public List<UserReview> getUserReviews() {
+        return userReviews;
+    }
+
+    public void setUserReviews(List<UserReview> userReviews) {
+        this.userReviews = userReviews;
     }
 }
