@@ -2,6 +2,7 @@ package com.example.ProductsMicroService.Controller;
 
 import com.example.ProductsMicroService.Entity.Category;
 import com.example.ProductsMicroService.Entity.Product;
+import com.example.ProductsMicroService.Entity.SolrProduct;
 import com.example.ProductsMicroService.Entity.SubCategory;
 import com.example.ProductsMicroService.Services.ProductService;
 import com.example.ProductsMicroService.dto.ProductDTO;
@@ -30,6 +31,34 @@ public class ProductController {
         BeanUtils.copyProperties(productDTO,product);
 
         Product productCreated=productService.addProduct(product);
+
+
+        List<String> subCategoriesForSolr=new ArrayList<>();
+        String categorySolr;
+        String brandSolr;
+
+        for(int i=0;i<productCreated.subCategory.size();i++)
+        {
+            subCategoriesForSolr.add(product.subCategory.get(i).getSubcategoryName());
+        }
+        categorySolr=productCreated.subCategory.get(0).category.getCategoryName();
+        brandSolr=productCreated.brand.getBrandName();
+
+        String postUrl="http://localhost:8080/addProductsToSearch";
+        SolrProduct solrProduct=new SolrProduct();
+        //Setting up solr member variables
+        solrProduct.setProductId(productCreated.getProductId());
+        solrProduct.setProductName(productCreated.getProductName());
+        solrProduct.setDescription(productCreated.getDescription());
+        solrProduct.setUsp(productCreated.getUsp());
+        solrProduct.setProductImage(productCreated.getProductImage());
+        solrProduct.setSubCategories(subCategoriesForSolr);
+        solrProduct.setCategory(categorySolr);
+        solrProduct.setBrand(brandSolr);
+
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> postResponse=restTemplate.postForEntity(postUrl,solrProduct,String.class);
+
         return new ResponseEntity<String>(productCreated.getProductName(),HttpStatus.CREATED);
     }
 
